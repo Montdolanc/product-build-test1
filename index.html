@@ -61,6 +61,9 @@
     [data-theme="dark"] .field input, [data-theme="dark"] .field textarea { background: #263d30; border-color: #52705b; color: #eef5ee; }
     [data-theme="dark"] .field .opt { color: #b5c9b9; }
     [data-theme="dark"] #contact-status.ok { color: #a9dcb5; } [data-theme="dark"] #contact-status.err { color: #f2a59c; }
+    .comments { margin-top: 28px; }
+    .comments h2 { margin: 0 0 18px; font-size: 20px; letter-spacing: -0.5px; }
+    #disqus_thread { min-height: 120px; }
     @media (max-width: 480px) { .fields-2 { grid-template-columns: 1fr; } }
     @media (max-width: 480px) { main { padding: 28px 18px; } .intro { padding-top: 36px; } .card { padding: 20px 16px; } .ball { width: 36px; height: 36px; font-size: 15px; } .balls { gap: 5px; } .row { gap: 5px; } .tag { font-size: 11px; } }
   </style>
@@ -90,7 +93,12 @@
         <p id="contact-status" role="status" aria-live="polite"></p>
       </form>
     </section>
-    <footer>번호는 무작위로 생성되며 당첨을 예측하거나 확률을 높이지 않습니다.<br>번호 생성은 브라우저에서만 동작합니다. 제휴 문의 내용은 Formspree를 통해 운영자에게 전달됩니다.</footer>
+    <section class="card comments" aria-labelledby="comments-title">
+      <h2 id="comments-title">댓글</h2>
+      <div id="disqus_thread"></div>
+      <noscript>댓글을 보려면 JavaScript를 켜 주세요. <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </section>
+    <footer>번호는 무작위로 생성되며 당첨을 예측하거나 확률을 높이지 않습니다.<br>번호 생성은 브라우저에서만 동작합니다. 제휴 문의는 Formspree, 댓글은 Disqus를 통해 처리됩니다.</footer>
   </main>
   <script>
     const themeToggle = document.querySelector('#theme-toggle');
@@ -105,6 +113,8 @@
       document.documentElement.dataset.theme = theme;
       try { localStorage.setItem('six-numbers-theme', theme); } catch {}
       updateThemeButton();
+      // Disqus는 불러올 때의 글자색으로 테마를 정하므로, 테마가 바뀌면 다시 불러옵니다.
+      if (window.DISQUS) window.DISQUS.reset({ reload: true, config: disqus_config });
     });
     function randomBelow(limit) {
       const range = 4294967296;
@@ -171,6 +181,17 @@
         contactSubmit.textContent = '문의 보내기';
       }
     });
+    // GitHub Pages와 Cloudflare 두 주소에서 같은 댓글 스레드를 보도록 대표 주소와 식별자를 고정합니다.
+    var disqus_config = function () {
+      this.page.url = 'https://montdolanc.github.io/product-build-test1/';
+      this.page.identifier = 'six-numbers-home';
+    };
+    (function () {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://productbuilld.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
   </script>
 </body>
 </html>
