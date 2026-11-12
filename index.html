@@ -44,6 +44,24 @@
     [data-theme="dark"] select { background: #263d30; border-color: #52705b; color: #eef5ee; }
     [data-theme="dark"] button { background: #c5dfac; color: #18382d; }
     [data-theme="dark"] button:hover { background: #daedca; }
+    .contact { margin-top: 28px; }
+    .contact h2 { margin: 0 0 6px; font-size: 20px; letter-spacing: -0.5px; }
+    .contact > p { margin: 0 0 22px; font-size: 14px; }
+    .field { display: grid; gap: 7px; margin-bottom: 16px; }
+    .field label { font-size: 13px; font-weight: 700; }
+    .field .opt { color: #87958a; font-weight: 400; }
+    .field input, .field textarea { width: 100%; padding: 12px 14px; border: 1px solid #d7ded6; border-radius: 12px; background: #fff; color: #18382d; font: inherit; font-size: 14px; }
+    .field textarea { min-height: 130px; resize: vertical; line-height: 1.6; }
+    .fields-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
+    .hp { position: absolute; left: -9999px; }
+    #contact-submit { width: 100%; }
+    #contact-submit:disabled { opacity: 0.6; cursor: wait; }
+    #contact-status { min-height: 22px; margin: 12px 0 0; font-size: 13px; }
+    #contact-status.ok { color: #2f7a4c; } #contact-status.err { color: #b0473d; }
+    [data-theme="dark"] .field input, [data-theme="dark"] .field textarea { background: #263d30; border-color: #52705b; color: #eef5ee; }
+    [data-theme="dark"] .field .opt { color: #b5c9b9; }
+    [data-theme="dark"] #contact-status.ok { color: #a9dcb5; } [data-theme="dark"] #contact-status.err { color: #f2a59c; }
+    @media (max-width: 480px) { .fields-2 { grid-template-columns: 1fr; } }
     @media (max-width: 480px) { main { padding: 28px 18px; } .intro { padding-top: 36px; } .card { padding: 20px 16px; } .ball { width: 36px; height: 36px; font-size: 15px; } .balls { gap: 5px; } .row { gap: 5px; } .tag { font-size: 11px; } }
   </style>
 </head>
@@ -56,7 +74,23 @@
       <div id="results"><div class="empty"><div class="dots" aria-hidden="true">• • • • • •</div><p>오늘의 숫자가 이곳에 나타납니다.</p></div></div>
       <p id="status" role="status" aria-live="polite">게임 수를 선택하고 번호를 생성해 주세요.</p>
     </section>
-    <footer>번호는 무작위로 생성되며 당첨을 예측하거나 확률을 높이지 않습니다.<br>브라우저에서만 동작하며 입력 정보를 수집하지 않습니다.</footer>
+    <section class="card contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">제휴 문의</h2>
+      <p>광고, 협업 등 제휴 제안을 남겨 주시면 이메일로 답변드릴게요.</p>
+      <form id="contact-form" action="https://formspree.io/f/mppdzybg" method="POST">
+        <div class="fields-2">
+          <div class="field"><label for="c-name">이름</label><input id="c-name" name="name" type="text" autocomplete="name" required maxlength="80"></div>
+          <div class="field"><label for="c-company">회사 / 단체 <span class="opt">(선택)</span></label><input id="c-company" name="company" type="text" autocomplete="organization" maxlength="100"></div>
+        </div>
+        <div class="field"><label for="c-email">이메일</label><input id="c-email" name="email" type="email" autocomplete="email" required maxlength="120"></div>
+        <div class="field"><label for="c-message">문의 내용</label><textarea id="c-message" name="message" required maxlength="3000"></textarea></div>
+        <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input type="hidden" name="_subject" value="[SIX NUMBERS] 새 제휴 문의">
+        <button id="contact-submit" type="submit">문의 보내기</button>
+        <p id="contact-status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+    <footer>번호는 무작위로 생성되며 당첨을 예측하거나 확률을 높이지 않습니다.<br>번호 생성은 브라우저에서만 동작합니다. 제휴 문의 내용은 Formspree를 통해 운영자에게 전달됩니다.</footer>
   </main>
   <script>
     const themeToggle = document.querySelector('#theme-toggle');
@@ -103,6 +137,39 @@
         row.append(label, balls); results.append(row);
       }
       document.querySelector('#status').textContent = `${count}게임 생성 완료 · 각 게임은 작은 숫자부터 정렬됩니다.`;
+    });
+    const contactForm = document.querySelector('#contact-form');
+    const contactStatus = document.querySelector('#contact-status');
+    const contactSubmit = document.querySelector('#contact-submit');
+    contactForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      contactSubmit.disabled = true;
+      contactSubmit.textContent = '보내는 중…';
+      contactStatus.className = '';
+      contactStatus.textContent = '';
+      try {
+        const response = await fetch(contactForm.action, {
+          method: 'POST',
+          body: new FormData(contactForm),
+          headers: { Accept: 'application/json' },
+        });
+        if (response.ok) {
+          contactForm.reset();
+          contactStatus.className = 'ok';
+          contactStatus.textContent = '문의가 접수되었습니다. 확인 후 이메일로 연락드릴게요.';
+        } else {
+          const data = await response.json().catch(() => ({}));
+          const detail = data.errors?.map((e) => e.message).join(', ');
+          throw new Error(detail || '전송에 실패했습니다.');
+        }
+      } catch (error) {
+        contactStatus.className = 'err';
+        const message = error instanceof TypeError ? '네트워크 오류로 전송하지 못했습니다.' : error.message;
+        contactStatus.textContent = `${message} 잠시 후 다시 시도해 주세요.`;
+      } finally {
+        contactSubmit.disabled = false;
+        contactSubmit.textContent = '문의 보내기';
+      }
     });
   </script>
 </body>
