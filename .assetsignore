@@ -1,3 +1,4 @@
-# 사이트에는 index.html만 공개합니다.
+# 사이트에는 index.html과 ads.txt만 공개합니다.
 *
 !index.html
+!ads.txt
