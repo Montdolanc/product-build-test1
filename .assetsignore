@@ -1,4 +1,17 @@
-# 사이트에는 index.html과 ads.txt만 공개합니다.
+# 사이트에 필요한 파일만 공개합니다.
 *
 !index.html
+!guide.html
+!odds.html
+!myths.html
+!about.html
+!privacy.html
+!404.html
+!styles.css
+!site.js
+!app.js
+!contact.js
+!sim.js
 !ads.txt
+!robots.txt
+!sitemap.xml

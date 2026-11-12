@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-adsense-account" content="ca-pub-3184173879744918">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3184173879744918"
+     crossorigin="anonymous"></script>
+  <title>로또 당첨 확률과 기대값 계산 · SIX NUMBERS</title>
+  <meta name="description" content="로또 6/45의 등수별 당첨 확률이 어떻게 계산되는지 조합으로 풀어 보고, 가상 구매 시뮬레이터로 수천 게임의 결과를 직접 확인해 보세요.">
+  <link rel="canonical" href="https://six-numbers-lotto.montdolanc.workers.dev/odds">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SIX NUMBERS">
+  <meta property="og:title" content="로또 당첨 확률과 기대값 계산 · SIX NUMBERS">
+  <meta property="og:description" content="로또 6/45의 등수별 당첨 확률이 어떻게 계산되는지 조합으로 풀어 보고, 가상 구매 시뮬레이터로 수천 게임의 결과를 직접 확인해 보세요.">
+  <meta property="og:url" content="https://six-numbers-lotto.montdolanc.workers.dev/odds">
+  <meta property="og:locale" content="ko_KR">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23214f3d'/%3E%3Ctext x='32' y='43' font-size='30' font-weight='800' text-anchor='middle' fill='white' font-family='sans-serif'%3E6%3C/text%3E%3C/svg%3E">
+  <script>
+    try { if (localStorage.getItem('six-numbers-theme') === 'dark') document.documentElement.dataset.theme = 'dark'; } catch {}
+  </script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip" href="#content">본문으로 건너뛰기</a>
+  <main>
+    <header class="site-header"><a class="brand" href="index.html">SIX NUMBERS</a><button id="theme-toggle" type="button" aria-label="다크 모드" aria-pressed="false">다크 모드</button></header>
+    <nav class="site-nav" aria-label="주요 메뉴"><a href="index.html">번호 생성기</a><a href="guide.html">로또 가이드</a><a href="odds.html" aria-current="page">당첨 확률</a><a href="myths.html">오해와 진실</a><a href="about.html">소개·문의</a></nav>
+    <div id="content">
+    <article class="article">
+      <section class="intro"><span class="eyebrow">ODDS</span><h1>당첨 확률과 기대값</h1><p class="lead">"814만 분의 1"이라는 숫자는 어디서 나올까요. 등수별 확률을 직접 계산하고, 가상으로 수천 게임을 사 보며 감을 잡아 봅니다.</p><p class="meta">최종 수정 2026년 11월 12일</p></section>
+
+      <h2>전체 조합은 8,145,060가지</h2>
+      <p>45개 가운데 순서 없이 6개를 고르는 방법의 수는 조합으로 셉니다.</p>
+      <div class="note"><p>C(45, 6) = (45 × 44 × 43 × 42 × 41 × 40) ÷ (6 × 5 × 4 × 3 × 2 × 1) = <strong>8,145,060</strong></p></div>
+      <p>당첨번호는 이 가운데 딱 하나입니다. 그래서 한 게임의 1등 확률이 8,145,060분의 1입니다. 매주 한 게임씩 산다면 평균적으로 15만 년 넘게 걸리는 확률입니다.</p>
+
+      <h2>등수별 확률 계산</h2>
+      <p>나머지 등수도 같은 방식으로 셀 수 있습니다. 내가 고른 6개 중 몇 개가 당첨번호 6개에서 나오고, 나머지가 당첨번호가 아닌 39개에서 나오는 경우의 수를 구하면 됩니다.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>등수</th><th>경우의 수 계산</th><th class="num">경우의 수</th><th class="num">확률</th></tr></thead>
+        <tbody>
+          <tr><td>1등</td><td>6개 모두 일치</td><td class="num">1</td><td class="num">1 / 8,145,060</td></tr>
+          <tr><td>2등</td><td>C(6,5) × 보너스 1개</td><td class="num">6</td><td class="num">1 / 1,357,510</td></tr>
+          <tr><td>3등</td><td>C(6,5) × 나머지 38개 중 1개</td><td class="num">228</td><td class="num">1 / 35,724</td></tr>
+          <tr><td>4등</td><td>C(6,4) × C(39,2)</td><td class="num">11,115</td><td class="num">1 / 733</td></tr>
+          <tr><td>5등</td><td>C(6,3) × C(39,3)</td><td class="num">182,780</td><td class="num">1 / 45</td></tr>
+          <tr><td><strong>합계</strong></td><td>5등 이상</td><td class="num">194,130</td><td class="num">약 2.38% (1 / 42)</td></tr>
+        </tbody>
+      </table></div>
+      <p>3등 계산에서 38을 곱하는 이유는, 당첨번호가 아닌 39개 가운데 보너스 번호 하나를 뺀 나머지에서 골라야 하기 때문입니다. 보너스 번호를 맞히면 2등이 됩니다.</p>
+      <p>정리하면 한 게임이 무엇이든 당첨될 확률은 약 2.4%, 거꾸로 말해 100게임 가운데 97~98게임은 낙첨입니다. 다섯 게임짜리 용지 한 장으로 5등 이상이 한 번이라도 나올 확률은 약 11%입니다.</p>
+
+      <h2>1,000원의 기대값은 약 500원</h2>
+      <p>기대값은 "아주 많이 샀을 때 한 게임당 평균적으로 돌려받는 금액"입니다. 로또는 판매액의 50%를 당첨금으로 배분하도록 정해져 있어서, 번호를 어떻게 고르든 한 게임의 기대값은 약 500원입니다. 고정 당첨금만 따로 계산해 보면 이렇습니다.</p>
+      <ul>
+        <li>5등: 5,000원 × (182,780 ÷ 8,145,060) ≈ 112원</li>
+        <li>4등: 50,000원 × (11,115 ÷ 8,145,060) ≈ 68원</li>
+      </ul>
+      <p>두 등수를 합쳐 약 180원이고, 나머지 약 320원이 1~3등 몫입니다. 그런데 이 320원은 거의 일어나지 않는 큰 당첨에 몰려 있습니다. 그래서 실제로 수백, 수천 게임을 사 보면 돌려받는 비율은 50%가 아니라 대개 20% 안팎에 머뭅니다. 아래 시뮬레이터로 확인해 보세요.</p>
+    </article>
+
+    <section class="card" aria-labelledby="sim-title">
+      <h2 id="sim-title">가상 구매 시뮬레이터</h2>
+      <p>가상의 추첨을 한 번 하고, 고른 수만큼 무작위 번호를 사서 결과를 집계합니다. 실제 돈은 쓰이지 않습니다.</p>
+      <div class="controls">
+        <select id="sim-games" aria-label="구매할 게임 수">
+          <option value="5">5게임 (5천 원)</option>
+          <option value="52">52게임 (1년간 매주 1게임)</option>
+          <option value="1000" selected>1,000게임 (100만 원)</option>
+          <option value="10000">10,000게임 (1,000만 원)</option>
+          <option value="100000">100,000게임 (1억 원)</option>
+        </select>
+        <button id="sim-run" type="button">가상으로 사 보기</button>
+      </div>
+      <div id="sim-result" hidden>
+        <p id="sim-winning"></p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>등수</th><th class="num">당첨 횟수</th><th class="num">계산에 쓴 당첨금</th></tr></thead>
+          <tbody>
+            <tr><td>1등</td><td class="num" id="sim-r1"></td><td class="num">20억 원 (가정)</td></tr>
+            <tr><td>2등</td><td class="num" id="sim-r2"></td><td class="num">5,000만 원 (가정)</td></tr>
+            <tr><td>3등</td><td class="num" id="sim-r3"></td><td class="num">150만 원 (가정)</td></tr>
+            <tr><td>4등</td><td class="num" id="sim-r4"></td><td class="num">5만 원</td></tr>
+            <tr><td>5등</td><td class="num" id="sim-r5"></td><td class="num">5천 원</td></tr>
+          </tbody>
+        </table></div>
+        <div class="stat-grid">
+          <div class="stat"><b id="sim-spent"></b><span>쓴 돈</span></div>
+          <div class="stat"><b id="sim-earned"></b><span>당첨금 합계 (세전)</span></div>
+          <div class="stat"><b id="sim-rate"></b><span>돌려받은 비율</span></div>
+        </div>
+      </div>
+      <p id="sim-status" role="status" aria-live="polite" class="meta">게임 수를 고르고 버튼을 눌러 주세요.</p>
+      <p class="meta">1~3등 당첨금은 회차마다 달라 대략적인 값으로 가정했습니다. 4·5등은 실제 고정 금액입니다.</p>
+    </section>
+
+    <article class="article">
+      <h2>시뮬레이터에서 볼 수 있는 것</h2>
+      <ul>
+        <li>1,000게임을 사도 4등이 한두 번, 5등이 스무 번 남짓 나오는 것이 보통입니다.</li>
+        <li>10만 게임, 곧 1억 원어치를 사도 1등은 거의 나오지 않습니다. 기대 횟수가 0.012번이기 때문입니다.</li>
+        <li>여러 번 돌려 보면 돌려받은 비율이 매번 다릅니다. 3등이 한 번 끼면 숫자가 크게 뛰는데, 그것이 바로 기대값이 드물고 큰 당첨에 몰려 있다는 뜻입니다.</li>
+      </ul>
+      <p>로또는 수익을 기대하고 사는 상품이 아니라, 적은 돈으로 일주일의 기대감을 사는 오락에 가깝습니다. 잃어도 괜찮은 금액 안에서만 즐기는 것이 숫자가 알려 주는 결론입니다.</p>
+
+      <h2>다음 글</h2>
+      <ul class="links">
+        <li><a href="myths.html"><strong>로또에 관한 오해와 진실</strong><span>자주 나온 번호, 명당, 자동과 수동을 확률로 따져 봅니다.</span></a></li>
+        <li><a href="guide.html"><strong>로또 6/45 가이드</strong><span>당첨금 구조와 세금, 수령 방법을 정리했습니다.</span></a></li>
+      </ul>
+    </article>
+    </div>
+    <footer class="site-footer">
+      <nav aria-label="사이트 정보"><a href="index.html">번호 생성기</a><a href="guide.html">로또 가이드</a><a href="odds.html">당첨 확률</a><a href="myths.html">오해와 진실</a><a href="about.html">소개·문의</a><a href="privacy.html">개인정보처리방침</a></nav>
+      <p>SIX NUMBERS는 동행복권·복권위원회와 관계없는 개인 운영 사이트입니다. 번호는 무작위로 생성되며 당첨을 예측하거나 확률을 높이지 않습니다.<br>복권은 만 19세 이상만 구매할 수 있습니다. 도박 문제로 도움이 필요하면 한국도박문제예방치유원 상담전화 1336(24시간, 무료)을 이용하세요.</p>
+    </footer>
+  </main>
+  <script src="site.js"></script>
+  <script src="sim.js"></script>
+</body>
+</html>

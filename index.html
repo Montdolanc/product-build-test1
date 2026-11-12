@@ -6,196 +6,88 @@
   <meta name="google-adsense-account" content="ca-pub-3184173879744918">
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3184173879744918"
      crossorigin="anonymous"></script>
-  <title>오늘의 여섯 숫자 · 로또 번호 생성기</title>
+  <title>오늘의 여섯 숫자 · 로또 6/45 번호 생성기</title>
+  <meta name="description" content="버튼 한 번으로 로또 6/45 번호를 치우침 없이 무작위로 뽑아 드립니다. 생성 원리와 당첨 확률, 흔한 오해까지 숫자로 정리했습니다.">
+  <link rel="canonical" href="https://six-numbers-lotto.montdolanc.workers.dev/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SIX NUMBERS">
+  <meta property="og:title" content="오늘의 여섯 숫자 · 로또 6/45 번호 생성기">
+  <meta property="og:description" content="버튼 한 번으로 로또 6/45 번호를 치우침 없이 무작위로 뽑아 드립니다. 생성 원리와 당첨 확률, 흔한 오해까지 숫자로 정리했습니다.">
+  <meta property="og:url" content="https://six-numbers-lotto.montdolanc.workers.dev/">
+  <meta property="og:locale" content="ko_KR">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23214f3d'/%3E%3Ctext x='32' y='43' font-size='30' font-weight='800' text-anchor='middle' fill='white' font-family='sans-serif'%3E6%3C/text%3E%3C/svg%3E">
   <script>
     try { if (localStorage.getItem('six-numbers-theme') === 'dark') document.documentElement.dataset.theme = 'dark'; } catch {}
   </script>
-  <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; background: #f5f4ef; color: #18382d; font-family: "Malgun Gothic", sans-serif; }
-    main { width: min(720px, 100%); margin: 0 auto; padding: 52px 24px; }
-    header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #d7ded6; padding-bottom: 20px; font-size: 13px; }
-    .brand { font-weight: 800; letter-spacing: 2px; }
-    .tag { color: #60756a; }
-    .intro { padding: 52px 0 28px; }
-    .eyebrow { color: #507361; font-size: 12px; font-weight: 700; letter-spacing: 2px; }
-    h1 { font-size: clamp(30px, 6vw, 44px); letter-spacing: -2px; margin: 15px 0; line-height: 1.3; }
-    p { color: #657469; line-height: 1.8; font-size: 15px; }
-    .card { background: #fff; border: 1px solid #e0e5dc; border-radius: 24px; padding: 28px; box-shadow: 0 12px 35px #173c2c06; }
-    .controls { display: flex; gap: 12px; margin-bottom: 26px; }
-    select, button { min-height: 48px; border-radius: 12px; font: inherit; font-size: 14px; }
-    select { padding: 0 12px; border: 1px solid #d7ded6; background: white; color: #18382d; }
-    button { cursor: pointer; background: #214f3d; color: white; border: 0; padding: 12px 20px; flex: 1; font-weight: 700; }
-    button:hover { background: #163b2c; }
-    :focus-visible { outline: 3px solid #d4a342; outline-offset: 4px; }
-    .row { display: flex; align-items: center; gap: 10px; padding: 18px 0; border-top: 1px solid #edf0e9; }
-    .label { width: 28px; color: #87958a; font-size: 12px; }
-    .balls { display: flex; justify-content: space-between; flex: 1; gap: 8px; }
-    .ball { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: 19px; font-weight: 800; font-variant-numeric: tabular-nums; }
-    .gold { background: #ae7b17; } .blue { background: #3c7daa; } .red { background: #be6259; } .gray { background: #78817f; } .green { background: #507c52; }
-    .empty { text-align: center; padding: 22px 0; color: #87958a; }
-    .empty .dots { font-size: 30px; letter-spacing: 12px; color: #d2dbce; }
-    #status { min-height: 22px; color: #6b7d70; font-size: 12px; margin: 15px 0 0; }
-    footer { padding-top: 22px; font-size: 12px; line-height: 1.8; color: #7a857b; }
-    #theme-toggle { flex: none; min-height: 40px; padding: 8px 14px; font-size: 12px; }
-    [data-theme="dark"] { color-scheme: dark; }
-    [data-theme="dark"] body { background: #14231d; color: #eef5ee; }
-    [data-theme="dark"] .card { background: #1e3027; border-color: #3b5142; }
-    [data-theme="dark"] header, [data-theme="dark"] .row { border-color: #3b5142; }
-    [data-theme="dark"] p, [data-theme="dark"] footer, [data-theme="dark"] #status,
-    [data-theme="dark"] .label, [data-theme="dark"] .eyebrow { color: #b5c9b9; }
-    [data-theme="dark"] select { background: #263d30; border-color: #52705b; color: #eef5ee; }
-    [data-theme="dark"] button { background: #c5dfac; color: #18382d; }
-    [data-theme="dark"] button:hover { background: #daedca; }
-    .contact { margin-top: 28px; }
-    .contact h2 { margin: 0 0 6px; font-size: 20px; letter-spacing: -0.5px; }
-    .contact > p { margin: 0 0 22px; font-size: 14px; }
-    .field { display: grid; gap: 7px; margin-bottom: 16px; }
-    .field label { font-size: 13px; font-weight: 700; }
-    .field .opt { color: #87958a; font-weight: 400; }
-    .field input, .field textarea { width: 100%; padding: 12px 14px; border: 1px solid #d7ded6; border-radius: 12px; background: #fff; color: #18382d; font: inherit; font-size: 14px; }
-    .field textarea { min-height: 130px; resize: vertical; line-height: 1.6; }
-    .fields-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; }
-    .hp { position: absolute; left: -9999px; }
-    #contact-submit { width: 100%; }
-    #contact-submit:disabled { opacity: 0.6; cursor: wait; }
-    #contact-status { min-height: 22px; margin: 12px 0 0; font-size: 13px; }
-    #contact-status.ok { color: #2f7a4c; } #contact-status.err { color: #b0473d; }
-    [data-theme="dark"] .field input, [data-theme="dark"] .field textarea { background: #263d30; border-color: #52705b; color: #eef5ee; }
-    [data-theme="dark"] .field .opt { color: #b5c9b9; }
-    [data-theme="dark"] #contact-status.ok { color: #a9dcb5; } [data-theme="dark"] #contact-status.err { color: #f2a59c; }
-    .comments { margin-top: 28px; }
-    .comments h2 { margin: 0 0 18px; font-size: 20px; letter-spacing: -0.5px; }
-    #disqus_thread { min-height: 120px; }
-    @media (max-width: 480px) { .fields-2 { grid-template-columns: 1fr; } }
-    @media (max-width: 480px) { main { padding: 28px 18px; } .intro { padding-top: 36px; } .card { padding: 20px 16px; } .ball { width: 36px; height: 36px; font-size: 15px; } .balls { gap: 5px; } .row { gap: 5px; } .tag { font-size: 11px; } }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <a class="skip" href="#content">본문으로 건너뛰기</a>
   <main>
-    <header><span class="brand">SIX NUMBERS</span><button id="theme-toggle" type="button" aria-label="다크 모드" aria-pressed="false">다크 모드</button></header>
+    <header class="site-header"><a class="brand" href="index.html">SIX NUMBERS</a><button id="theme-toggle" type="button" aria-label="다크 모드" aria-pressed="false">다크 모드</button></header>
+    <nav class="site-nav" aria-label="주요 메뉴"><a href="index.html" aria-current="page">번호 생성기</a><a href="guide.html">로또 가이드</a><a href="odds.html">당첨 확률</a><a href="myths.html">오해와 진실</a><a href="about.html">소개·문의</a></nav>
+    <div id="content">
     <section class="intro"><span class="eyebrow">LOTTO 6 / 45</span><h1>오늘의 여섯 숫자.</h1><p>고민 없이 버튼 한 번으로.<br>1부터 45까지, 겹치지 않는 숫자 여섯 개를 뽑아 보세요.</p></section>
     <section class="card" aria-label="로또 번호 생성기">
       <div class="controls"><select id="count" aria-label="생성할 게임 수"><option value="1">1게임</option><option value="5" selected>5게임</option></select><button id="generate" type="button">번호 생성하기 ↗</button></div>
       <div id="results"><div class="empty"><div class="dots" aria-hidden="true">• • • • • •</div><p>오늘의 숫자가 이곳에 나타납니다.</p></div></div>
       <p id="status" role="status" aria-live="polite">게임 수를 선택하고 번호를 생성해 주세요.</p>
     </section>
-    <section class="card contact" aria-labelledby="contact-title">
-      <h2 id="contact-title">제휴 문의</h2>
-      <p>광고, 협업 등 제휴 제안을 남겨 주시면 이메일로 답변드릴게요.</p>
-      <form id="contact-form" action="https://formspree.io/f/mppdzybg" method="POST">
-        <div class="fields-2">
-          <div class="field"><label for="c-name">이름</label><input id="c-name" name="name" type="text" autocomplete="name" required maxlength="80"></div>
-          <div class="field"><label for="c-company">회사 / 단체 <span class="opt">(선택)</span></label><input id="c-company" name="company" type="text" autocomplete="organization" maxlength="100"></div>
-        </div>
-        <div class="field"><label for="c-email">이메일</label><input id="c-email" name="email" type="email" autocomplete="email" required maxlength="120"></div>
-        <div class="field"><label for="c-message">문의 내용</label><textarea id="c-message" name="message" required maxlength="3000"></textarea></div>
-        <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
-        <input type="hidden" name="_subject" value="[SIX NUMBERS] 새 제휴 문의">
-        <button id="contact-submit" type="submit">문의 보내기</button>
-        <p id="contact-status" role="status" aria-live="polite"></p>
-      </form>
-    </section>
+
+    <article class="article">
+      <h2>이 생성기가 번호를 뽑는 방법</h2>
+      <p>SIX NUMBERS는 "잘 맞는 번호"를 골라 주는 도구가 아닙니다. 그런 번호는 존재하지 않기 때문입니다. 대신 한 가지만 제대로 합니다. 1부터 45까지의 숫자 가운데 여섯 개를, 어느 숫자도 유리하거나 불리하지 않게 뽑습니다.</p>
+      <p>번호는 브라우저가 제공하는 암호학적 난수(<code>crypto.getRandomValues</code>)로 만듭니다. 흔히 쓰는 <code>Math.random</code>보다 예측하기 어려운 난수이고, 숫자 범위를 맞출 때 생기는 미세한 치우침은 범위를 벗어난 값을 버리고 다시 뽑는 방식으로 없앴습니다. 45개의 공을 섞어 앞에서 여섯 개를 꺼내는 것과 같은 절차라서 한 게임 안에서 같은 숫자가 두 번 나오지 않습니다.</p>
+      <p>계산은 모두 지금 보고 계신 브라우저 안에서 끝납니다. 생성된 번호는 서버로 전송되거나 저장되지 않으며, 페이지를 새로 고치면 사라집니다. 자세한 원리는 <a href="about.html">소개 페이지</a>에 적어 두었습니다.</p>
+
+      <h2>공 색깔은 무엇을 뜻하나요</h2>
+      <p>실제 추첨 방송에서 쓰는 공과 같은 구간으로 색을 나눴습니다. 색은 번호대를 한눈에 구분하기 위한 표시일 뿐, 당첨과는 관계가 없습니다.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>번호 구간</th><th>색</th><th>예시</th></tr></thead>
+        <tbody>
+          <tr><td>1 ~ 10</td><td>노랑</td><td><span class="ball sm gold">7</span></td></tr>
+          <tr><td>11 ~ 20</td><td>파랑</td><td><span class="ball sm blue">14</span></td></tr>
+          <tr><td>21 ~ 30</td><td>빨강</td><td><span class="ball sm red">23</span></td></tr>
+          <tr><td>31 ~ 40</td><td>회색</td><td><span class="ball sm gray">38</span></td></tr>
+          <tr><td>41 ~ 45</td><td>초록</td><td><span class="ball sm green">45</span></td></tr>
+        </tbody>
+      </table></div>
+
+      <h2>숫자로 보는 로또 6/45</h2>
+      <div class="stat-grid">
+        <div class="stat"><b>8,145,060</b><span>가능한 번호 조합 수</span></div>
+        <div class="stat"><b>약 2.4%</b><span>한 게임이 5등 이상일 확률</span></div>
+        <div class="stat"><b>50%</b><span>판매액 중 당첨금 비율</span></div>
+      </div>
+      <p>한 게임이 1등에 당첨될 확률은 814만 5,060분의 1입니다. 어떤 번호를 고르든, 직접 고르든 자동으로 받든 이 숫자는 달라지지 않습니다. 등수별 확률이 어떻게 계산되는지, 1,000원짜리 한 게임의 기대값이 얼마인지는 아래 글에서 차근차근 풀어 두었습니다.</p>
+
+      <h2>더 읽어 보기</h2>
+      <ul class="links">
+        <li><a href="guide.html"><strong>로또 6/45 가이드</strong><span>구매 방법, 추첨 일정, 등수별 당첨금 구조, 세금과 수령 절차까지 처음 사는 분을 위한 정리.</span></a></li>
+        <li><a href="odds.html"><strong>당첨 확률과 기대값</strong><span>등수별 확률을 직접 계산해 보고, 가상 구매 시뮬레이터로 수천 게임의 결과를 확인해 보세요.</span></a></li>
+        <li><a href="myths.html"><strong>로또에 관한 오해와 진실</strong><span>자주 나온 번호, 명당, 자동과 수동. 널리 퍼진 믿음을 확률로 하나씩 따져 봅니다.</span></a></li>
+      </ul>
+
+      <h2>자주 묻는 질문</h2>
+      <details><summary>여기서 뽑은 번호가 당첨될 확률이 더 높은가요?</summary><p>아니요. 모든 조합의 1등 확률은 814만 5,060분의 1로 같습니다. 이 생성기는 고르는 수고를 덜어 줄 뿐 확률을 바꾸지 않습니다.</p></details>
+      <details><summary>판매점의 자동 번호와 무엇이 다른가요?</summary><p>확률 면에서는 차이가 없습니다. 다만 구매 전에 번호를 미리 보고, 마음에 드는 조합을 골라 수동으로 표기할 수 있다는 점이 다릅니다.</p></details>
+      <details><summary>생성한 번호가 어딘가에 저장되나요?</summary><p>저장되지 않습니다. 번호는 브라우저 안에서만 만들어지고 서버로 보내지 않습니다. 사이트가 다루는 정보는 <a href="privacy.html">개인정보처리방침</a>에서 확인할 수 있습니다.</p></details>
+      <details><summary>같은 번호가 다시 나올 수 있나요?</summary><p>한 게임 안에서는 중복이 없습니다. 여러 게임 사이에서는 같은 숫자가 겹칠 수 있고, 여섯 개가 모두 같은 조합이 다시 나올 가능성도 아주 낮지만 0은 아닙니다.</p></details>
+      <details><summary>이 사이트에서 로또를 살 수 있나요?</summary><p>아니요. SIX NUMBERS는 번호를 만들어 주는 비공식 도구입니다. 구매는 복권 판매점이나 동행복권 공식 채널에서만 할 수 있습니다.</p></details>
+    </article>
+
     <section class="card comments" aria-labelledby="comments-title">
       <h2 id="comments-title">댓글</h2>
       <div id="disqus_thread"></div>
       <noscript>댓글을 보려면 JavaScript를 켜 주세요. <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     </section>
-    <footer>번호는 무작위로 생성되며 당첨을 예측하거나 확률을 높이지 않습니다.<br>번호 생성은 브라우저에서만 동작합니다. 제휴 문의는 Formspree, 댓글은 Disqus를 통해 처리됩니다.</footer>
+    </div>
+    <footer class="site-footer">
+      <nav aria-label="사이트 정보"><a href="index.html">번호 생성기</a><a href="guide.html">로또 가이드</a><a href="odds.html">당첨 확률</a><a href="myths.html">오해와 진실</a><a href="about.html">소개·문의</a><a href="privacy.html">개인정보처리방침</a></nav>
+      <p>SIX NUMBERS는 동행복권·복권위원회와 관계없는 개인 운영 사이트입니다. 번호는 무작위로 생성되며 당첨을 예측하거나 확률을 높이지 않습니다.<br>복권은 만 19세 이상만 구매할 수 있습니다. 도박 문제로 도움이 필요하면 한국도박문제예방치유원 상담전화 1336(24시간, 무료)을 이용하세요.</p>
+    </footer>
   </main>
-  <script>
-    const themeToggle = document.querySelector('#theme-toggle');
-    function updateThemeButton() {
-      const dark = document.documentElement.dataset.theme === 'dark';
-      themeToggle.textContent = dark ? '라이트 모드로' : '다크 모드로';
-      themeToggle.setAttribute('aria-pressed', String(dark));
-    }
-    updateThemeButton();
-    themeToggle.addEventListener('click', () => {
-      const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-      document.documentElement.dataset.theme = theme;
-      try { localStorage.setItem('six-numbers-theme', theme); } catch {}
-      updateThemeButton();
-      // Disqus는 불러올 때의 글자색으로 테마를 정하므로, 테마가 바뀌면 다시 불러옵니다.
-      if (window.DISQUS) window.DISQUS.reset({ reload: true, config: disqus_config });
-    });
-    function randomBelow(limit) {
-      const range = 4294967296;
-      const cutoff = range - (range % limit);
-      const values = new Uint32Array(1);
-      do { crypto.getRandomValues(values); } while (values[0] >= cutoff);
-      return values[0] % limit;
-    }
-    function drawNumbers() {
-      const pool = Array.from({ length: 45 }, (_, i) => i + 1);
-      for (let i = 0; i < 6; i++) {
-        const j = i + randomBelow(45 - i);
-        [pool[i], pool[j]] = [pool[j], pool[i]];
-      }
-      return pool.slice(0, 6).sort((a, b) => a - b);
-    }
-    document.querySelector('#generate').addEventListener('click', () => {
-      const count = Number(document.querySelector('#count').value);
-      const results = document.querySelector('#results');
-      results.replaceChildren();
-      for (let game = 0; game < count; game++) {
-        const row = document.createElement('div'); row.className = 'row';
-        const label = document.createElement('span'); label.className = 'label'; label.textContent = String.fromCharCode(65 + game);
-        const balls = document.createElement('div'); balls.className = 'balls';
-        for (const n of drawNumbers()) {
-          const ball = document.createElement('span');
-          ball.className = 'ball ' + ['gold', 'blue', 'red', 'gray', 'green'][Math.floor((n - 1) / 10)];
-          ball.textContent = n; balls.append(ball);
-        }
-        row.append(label, balls); results.append(row);
-      }
-      document.querySelector('#status').textContent = `${count}게임 생성 완료 · 각 게임은 작은 숫자부터 정렬됩니다.`;
-    });
-    const contactForm = document.querySelector('#contact-form');
-    const contactStatus = document.querySelector('#contact-status');
-    const contactSubmit = document.querySelector('#contact-submit');
-    contactForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      contactSubmit.disabled = true;
-      contactSubmit.textContent = '보내는 중…';
-      contactStatus.className = '';
-      contactStatus.textContent = '';
-      try {
-        const response = await fetch(contactForm.action, {
-          method: 'POST',
-          body: new FormData(contactForm),
-          headers: { Accept: 'application/json' },
-        });
-        if (response.ok) {
-          contactForm.reset();
-          contactStatus.className = 'ok';
-          contactStatus.textContent = '문의가 접수되었습니다. 확인 후 이메일로 연락드릴게요.';
-        } else {
-          const data = await response.json().catch(() => ({}));
-          const detail = data.errors?.map((e) => e.message).join(', ');
-          throw new Error(detail || '전송에 실패했습니다.');
-        }
-      } catch (error) {
-        contactStatus.className = 'err';
-        const message = error instanceof TypeError ? '네트워크 오류로 전송하지 못했습니다.' : error.message;
-        contactStatus.textContent = `${message} 잠시 후 다시 시도해 주세요.`;
-      } finally {
-        contactSubmit.disabled = false;
-        contactSubmit.textContent = '문의 보내기';
-      }
-    });
-    // GitHub Pages와 Cloudflare 두 주소에서 같은 댓글 스레드를 보도록 대표 주소와 식별자를 고정합니다.
-    var disqus_config = function () {
-      this.page.url = 'https://montdolanc.github.io/product-build-test1/';
-      this.page.identifier = 'six-numbers-home';
-    };
-    (function () {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://productbuilld.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', +new Date());
-      (d.head || d.body).appendChild(s);
-    })();
-  </script>
+  <script src="site.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
-
