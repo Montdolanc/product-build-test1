@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>오늘의 여섯 숫자 · 로또 번호 생성기</title>
+  <script>
+    try { if (localStorage.getItem('six-numbers-theme') === 'dark') document.documentElement.dataset.theme = 'dark'; } catch {}
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #f5f4ef; color: #18382d; font-family: "Malgun Gothic", sans-serif; }
+    main { width: min(720px, 100%); margin: 0 auto; padding: 52px 24px; }
+    header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #d7ded6; padding-bottom: 20px; font-size: 13px; }
+    .brand { font-weight: 800; letter-spacing: 2px; }
+    .tag { color: #60756a; }
+    .intro { padding: 52px 0 28px; }
+    .eyebrow { color: #507361; font-size: 12px; font-weight: 700; letter-spacing: 2px; }
+    h1 { font-size: clamp(30px, 6vw, 44px); letter-spacing: -2px; margin: 15px 0; line-height: 1.3; }
+    p { color: #657469; line-height: 1.8; font-size: 15px; }
+    .card { background: #fff; border: 1px solid #e0e5dc; border-radius: 24px; padding: 28px; box-shadow: 0 12px 35px #173c2c06; }
+    .controls { display: flex; gap: 12px; margin-bottom: 26px; }
+    select, button { min-height: 48px; border-radius: 12px; font: inherit; font-size: 14px; }
+    select { padding: 0 12px; border: 1px solid #d7ded6; background: white; color: #18382d; }
+    button { cursor: pointer; background: #214f3d; color: white; border: 0; padding: 12px 20px; flex: 1; font-weight: 700; }
+    button:hover { background: #163b2c; }
+    :focus-visible { outline: 3px solid #d4a342; outline-offset: 4px; }
+    .row { display: flex; align-items: center; gap: 10px; padding: 18px 0; border-top: 1px solid #edf0e9; }
+    .label { width: 28px; color: #87958a; font-size: 12px; }
+    .balls { display: flex; justify-content: space-between; flex: 1; gap: 8px; }
+    .ball { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-size: 19px; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .gold { background: #ae7b17; } .blue { background: #3c7daa; } .red { background: #be6259; } .gray { background: #78817f; } .green { background: #507c52; }
+    .empty { text-align: center; padding: 22px 0; color: #87958a; }
+    .empty .dots { font-size: 30px; letter-spacing: 12px; color: #d2dbce; }
+    #status { min-height: 22px; color: #6b7d70; font-size: 12px; margin: 15px 0 0; }
+    footer { padding-top: 22px; font-size: 12px; line-height: 1.8; color: #7a857b; }
+    #theme-toggle { flex: none; min-height: 40px; padding: 8px 14px; font-size: 12px; }
+    [data-theme="dark"] { color-scheme: dark; }
+    [data-theme="dark"] body { background: #14231d; color: #eef5ee; }
+    [data-theme="dark"] .card { background: #1e3027; border-color: #3b5142; }
+    [data-theme="dark"] header, [data-theme="dark"] .row { border-color: #3b5142; }
+    [data-theme="dark"] p, [data-theme="dark"] footer, [data-theme="dark"] #status,
+    [data-theme="dark"] .label, [data-theme="dark"] .eyebrow { color: #b5c9b9; }
+    [data-theme="dark"] select { background: #263d30; border-color: #52705b; color: #eef5ee; }
+    [data-theme="dark"] button { background: #c5dfac; color: #18382d; }
+    [data-theme="dark"] button:hover { background: #daedca; }
+    @media (max-width: 480px) { main { padding: 28px 18px; } .intro { padding-top: 36px; } .card { padding: 20px 16px; } .ball { width: 36px; height: 36px; font-size: 15px; } .balls { gap: 5px; } .row { gap: 5px; } .tag { font-size: 11px; } }
+  </style>
+</head>
+<body>
+  <main>
+    <header><span class="brand">SIX NUMBERS</span><button id="theme-toggle" type="button" aria-label="다크 모드" aria-pressed="false">다크 모드</button></header>
+    <section class="intro"><span class="eyebrow">LOTTO 6 / 45</span><h1>오늘의 여섯 숫자.</h1><p>고민 없이 버튼 한 번으로.<br>1부터 45까지, 겹치지 않는 숫자 여섯 개를 뽑아 보세요.</p></section>
+    <section class="card" aria-label="로또 번호 생성기">
+      <div class="controls"><select id="count" aria-label="생성할 게임 수"><option value="1">1게임</option><option value="5" selected>5게임</option></select><button id="generate" type="button">번호 생성하기 ↗</button></div>
+      <div id="results"><div class="empty"><div class="dots" aria-hidden="true">• • • • • •</div><p>오늘의 숫자가 이곳에 나타납니다.</p></div></div>
+      <p id="status" role="status" aria-live="polite">게임 수를 선택하고 번호를 생성해 주세요.</p>
+    </section>
+    <footer>번호는 무작위로 생성되며 당첨을 예측하거나 확률을 높이지 않습니다.<br>브라우저에서만 동작하며 입력 정보를 수집하지 않습니다.</footer>
+  </main>
+  <script>
+    const themeToggle = document.querySelector('#theme-toggle');
+    function updateThemeButton() {
+      const dark = document.documentElement.dataset.theme === 'dark';
+      themeToggle.textContent = dark ? '라이트 모드로' : '다크 모드로';
+      themeToggle.setAttribute('aria-pressed', String(dark));
+    }
+    updateThemeButton();
+    themeToggle.addEventListener('click', () => {
+      const theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+      document.documentElement.dataset.theme = theme;
+      try { localStorage.setItem('six-numbers-theme', theme); } catch {}
+      updateThemeButton();
+    });
+    function randomBelow(limit) {
+      const range = 4294967296;
+      const cutoff = range - (range % limit);
+      const values = new Uint32Array(1);
+      do { crypto.getRandomValues(values); } while (values[0] >= cutoff);
+      return values[0] % limit;
+    }
+    function drawNumbers() {
+      const pool = Array.from({ length: 45 }, (_, i) => i + 1);
+      for (let i = 0; i < 6; i++) {
+        const j = i + randomBelow(45 - i);
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      return pool.slice(0, 6).sort((a, b) => a - b);
+    }
+    document.querySelector('#generate').addEventListener('click', () => {
+      const count = Number(document.querySelector('#count').value);
+      const results = document.querySelector('#results');
+      results.replaceChildren();
+      for (let game = 0; game < count; game++) {
+        const row = document.createElement('div'); row.className = 'row';
+        const label = document.createElement('span'); label.className = 'label'; label.textContent = String.fromCharCode(65 + game);
+        const balls = document.createElement('div'); balls.className = 'balls';
+        for (const n of drawNumbers()) {
+          const ball = document.createElement('span');
+          ball.className = 'ball ' + ['gold', 'blue', 'red', 'gray', 'green'][Math.floor((n - 1) / 10)];
+          ball.textContent = n; balls.append(ball);
+        }
+        row.append(label, balls); results.append(row);
+      }
+      document.querySelector('#status').textContent = `${count}게임 생성 완료 · 각 게임은 작은 숫자부터 정렬됩니다.`;
+    });
+  </script>
+</body>
+</html>
+
