@@ -1,0 +1,3 @@
+# 사이트에는 index.html만 공개합니다.
+*
+!index.html
