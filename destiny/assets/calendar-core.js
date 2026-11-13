@@ -1,5 +1,5 @@
 /* Destiny Garden v0.4 — offline Korean lunar month index and day-pillar computation.
-   Lookup generated from korean_lunar_calendar 0.3.1. Intended for 1980–2026 births.
+   Lookup generated from korean_lunar_calendar 0.3.1. Intended for 1900–2026 births.
    Day stem cycle is anchored at 2000-01-01 戊午 and checked against 15 Korean-calendar fixtures.
    This fallback DOES NOT compute the year/month/hour pillars and must not be called a full saju engine. */
 (function(g){'use strict';
@@ -17,6 +17,25 @@ for (const [lunarYear,records] of Object.entries(earlyLunarData)) {
     lunarMonths[lunarYear+'-'+lunarMonth+'-'+isLeap]=[year+'-'+mm+'-'+dd,length];
   }
 }
+/* Early Korean lunar conversion table: 1900–1979, derived from
+   usingsky/korean_lunar_calendar_py Korean lunar encoded yearly data (MIT). */
+const earlyYears=[0x830084bd,0x82c404ae,0x82c60a57,0x82fe554d,0xc2c40d26,0x82c60d95,0x83014655,0x82c4056a,0xc2c609ad,0x8300255d,0x82c404ae,0x83006a5b,0xc2c40a4d,0x82c40d25,0x83005da9,0x82c60b55,0xc2c4056a,0x83002ada,0x82c6095d,0x830074bb,0xc2c4049b,0x82c40a4b,0x83005b4b,0x82c406a9,0xc2c40ad4,0x83024bb5,0x82c402b6,0x82c6095b,0xc3002537,0x82c40497,0x82fe6656,0x82c40e4a,0xc2c60ea5,0x830156a9,0x82c605b5,0x82c402b6,0xc30138ae,0x82c4092e,0x83017c8d,0x82c40c95,0xc2c40d4a,0x83016d8a,0x82c60b69,0x82c6056d,0xc301425b,0x82c4025d,0x82c4092d,0x83002d2b,0xc2c40a95,0x83007d55,0x82c40b4a,0x82c60b55,0xc3015555,0x82c604db,0x82c4025b,0x83013857,0xc2c4052b,0x83008a9b,0x82c40695,0x82c406aa,0xc3006aea,0x82c60ab5,0x82c404b6,0x83004aae,0xc2c60a57,0x82c40527,0x82fe3726,0x82c60d95,0xc30076b5,0x82c4056a,0x82c609ad,0x830054dd,0xc2c404ae,0x82c40a4e,0x83004d4d,0x82c40d25,0xc3008d59,0x82c40b54,0x82c60d6a,0x8301695a];
+let earlyStart=Date.UTC(1900,0,31);
+lunarMonths["1899-12-0"]=["1900-01-01",30];
+for(let n=0;n<earlyYears.length;n++){
+ const y=1900+n, bits=earlyYears[n], leap=(bits>>>12)&15;
+ for(let m=1;m<=12;m++){
+  let length=29+((bits>>>(12-m))&1);
+  lunarMonths[y+"-"+String(m).padStart(2,"0")+"-0"]=[new Date(earlyStart).toISOString().slice(0,10),length];
+  earlyStart+=length*86400000;
+  if(m===leap){
+   length=29+((bits>>>16)&1);
+   lunarMonths[y+"-"+String(m).padStart(2,"0")+"-1"]=[new Date(earlyStart).toISOString().slice(0,10),length];
+   earlyStart+=length*86400000;
+  }
+ }
+}
+if(new Date(earlyStart).toISOString().slice(0,10)!=="1980-02-16")throw Error("calendar range validation failed");
 const stems='甲乙丙丁戊己庚辛壬癸', branches='子丑寅卯辰巳午未申酉戌亥';
 const DAY=86400000, EPOCH=Date.UTC(2000,0,1);
 function isoDate(y,m,d){const t=new Date(Date.UTC(y,m-1,d));if(t.getUTCFullYear()!==y||t.getUTCMonth()!==m-1||t.getUTCDate()!==d)throw Error('올바른 날짜를 입력해 주세요.');return t.toISOString().slice(0,10);}
@@ -24,5 +43,5 @@ function utcDay(iso){return Date.parse(iso+'T00:00:00Z');}
 function solarToDayPillar(iso){const [y,m,d]=iso.split('-').map(Number);isoDate(y,m,d);const days=Math.round((utcDay(iso)-EPOCH)/DAY);const cycle=((54+days)%60+60)%60;return stems[cycle%10]+branches[cycle%12];}
 function lunarToSolar(year,month,day,leap){if(!Number.isInteger(year)||!Number.isInteger(month)||!Number.isInteger(day)||month<1||month>12)throw Error('음력 날짜를 확인해 주세요.');const item=lunarMonths[year+'-'+String(month).padStart(2,'0')+'-'+(leap?1:0)];if(!item)throw Error('해당 음력 월이나 윤달을 지원하지 않습니다.');if(day<1||day>item[1])throw Error('선택한 음력 월에는 해당 날짜가 없습니다.');return new Date(utcDay(item[0])+(day-1)*DAY).toISOString().slice(0,10);}
 function hasLeapMonth(year,month){return Boolean(lunarMonths[year+'-'+String(month).padStart(2,'0')+'-1']);}
-g.KoreanCalendarCore=Object.freeze({version:'0.4.1',lunarToSolar,dayPillar:solarToDayPillar,isoDate,hasLeapMonth});
+g.KoreanCalendarCore=Object.freeze({version:'0.5.0',lunarToSolar,dayPillar:solarToDayPillar,isoDate,hasLeapMonth});
 })(typeof window!=='undefined'?window:globalThis);
