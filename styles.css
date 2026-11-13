@@ -39,6 +39,25 @@ button:disabled { opacity: 0.6; cursor: wait; }
 #status { min-height: 22px; color: #6b7d70; font-size: 12px; margin: 15px 0 0; }
 #theme-toggle { flex: none; min-height: 40px; padding: 8px 14px; font-size: 12px; }
 
+/* 로또와 독립된 운명의 정원 안내 */
+.destiny-promo{display:flex;align-items:center;justify-content:space-between;gap:22px;margin:24px 0 0;padding:24px 26px;border:1px solid #aeb8d9;border-radius:20px;background:linear-gradient(120deg,#f0edfa,#e7eff7);box-shadow:0 10px 26px #173c2c0a}
+.destiny-promo-content{min-width:0;flex:1}
+.destiny-promo .destiny-promo-label{margin:0 0 6px;color:#594a8a;font-weight:800;font-size:12px}
+.destiny-promo h2{font-size:21px;color:#2c2c4d;margin:0 0 7px;line-height:1.4;letter-spacing:-.6px}
+.destiny-promo-content>p:not(.destiny-promo-label){font-size:14px;line-height:1.7;color:#434e68;margin:0 0 7px}
+.destiny-promo .destiny-promo-note{font-size:12px!important;color:#646d82!important;margin:5px 0 0!important}
+.destiny-promo-link{flex:none;display:inline-flex;align-items:center;gap:8px;justify-content:center;min-height:48px;padding:12px 18px;border-radius:12px;background:#40325f;color:#fff;text-decoration:none;font-weight:800;font-size:14px;white-space:nowrap}
+.destiny-promo-link:hover{color:#fff;background:#302348}
+.destiny-promo-link:focus-visible{outline:3px solid #d4a342;outline-offset:4px}
+[data-theme="dark"] .destiny-promo{background:linear-gradient(120deg,#27263d,#22364b);border-color:#546482}
+[data-theme="dark"] .destiny-promo h2{color:#f5e9ff}
+[data-theme="dark"] .destiny-promo .destiny-promo-label{color:#c8b6f2}
+[data-theme="dark"] .destiny-promo-content>p:not(.destiny-promo-label){color:#d1d5e8}
+[data-theme="dark"] .destiny-promo .destiny-promo-note{color:#bfc5d8!important}
+[data-theme="dark"] .destiny-promo-link{background:#d7c2f6;color:#241832}
+[data-theme="dark"] .destiny-promo-link:hover{background:#e9dafa;color:#241832}
+@media(max-width:650px){.destiny-promo{flex-direction:column;align-items:stretch;padding:20px 18px;gap:14px}.destiny-promo-link{width:100%;white-space:normal}}
+
 /* 본문 글 */
 .article { padding: 8px 0 0; }
 .article h2 { font-size: 22px; letter-spacing: -0.6px; line-height: 1.4; margin: 40px 0 10px; }
