@@ -12,7 +12,7 @@ c.globalThis=c;
 vm.createContext(c);
 vm.runInContext(plain,c);
 const p=c.DestinyPlainKorean;
-assert.equal(p.version,'0.9.0');
+assert.equal(p.version,'0.9.1');
 assert.equal(Object.keys(p.STEMS).length,10);
 assert.equal(Object.keys(p.BRANCHES).length,12);
 for(const stem of Object.keys(p.STEMS)){
@@ -28,9 +28,14 @@ for(const name of ['비견','겁재','식신','상관','편재','정재','편관
  assert.ok(!chinese.test(p.tenGodStory(name)));
 }
 assert.equal(p.simplePillar('丙寅'),'태양 · 호랑이');
-assert.equal(p.simplePillar(null),'시간 정보가 없어 표시할 수 없어요.');
-assert.equal(p.branchRelation('충(沖)'),'변화와 마주침');
-assert.equal(p.branchRelation('육합(六合)'),'연결과 조화');
+assert.equal(p.simplePillar(null),'출생정보가 부족해 표시할 수 없어요.');
+assert.equal(p.branchRelation('충(沖)'),'변화를 마주하는 모습');
+assert.equal(p.branchRelation('육합(六合)'),'서로 어울리는 모습');
+assert.match(p.yearHeadline('비견','정재'),/나만의 기준/);
+assert.match(p.monthIntro('정리','정재'),/차근차근 정리/);
+for(const [name,value] of Object.entries(p.positionRole))assert.ok(value.length>4,name);
+for(const name of ['비견','겁재','식신','상관','편재','정재','편관','정관','편인','정인'])assert.ok(!chinese.test(p.tenGodTheme(name)));
+
 // Execute the actual inline site code with a minimal DOM so result-template output
 // can be checked, without installing a browser or posting birth data anywhere.
 const app={innerHTML:'',querySelectorAll(){return []},addEventListener(){},focus(){}};
