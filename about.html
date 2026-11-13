@@ -7,6 +7,13 @@
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
   </script>
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "zd4dwzvr2o");
+  </script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="google-adsense-account" content="ca-pub-3184173879744918">
@@ -62,7 +69,7 @@
     <section class="card contact" aria-labelledby="contact-title">
       <h2 id="contact-title">문의</h2>
       <p>내용 오류 제보, 광고·협업 등 제휴 제안을 남겨 주시면 이메일로 답변드릴게요.</p>
-      <form id="contact-form" action="https://formspree.io/f/mppdzybg" method="POST">
+      <form id="contact-form" data-clarity-mask="true" action="https://formspree.io/f/mppdzybg" method="POST">
         <div class="fields-2">
           <div class="field"><label for="c-name">이름</label><input id="c-name" name="name" type="text" autocomplete="name" required maxlength="80"></div>
           <div class="field"><label for="c-company">회사 / 단체 <span class="opt">(선택)</span></label><input id="c-company" name="company" type="text" autocomplete="organization" maxlength="100"></div>

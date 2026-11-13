@@ -46,7 +46,7 @@ for(const script of ['calendar-core.js','solar-terms.js','saju-pillars.js','pill
 }
 const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
 for(const m of index.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)){
- if(m[1].trim())vm.runInContext(m[1],c,{filename:'destiny/index.html inline script'});
+ if(m[1].trim()&&!m[1].includes('clarity.ms/tag'))vm.runInContext(m[1],c,{filename:'destiny/index.html inline script'});
 }
 vm.runInContext(`saju={pillars:{hour:'丁巳',day:'癸巳',month:'丙申',year:'丙寅'},timeKnown:true,solarDate:'1986-08-17',warning:'한국 기준으로 계산했어요.',counts:{목:1,화:3,토:0,금:1,수:3},total:8};guardian=guardians.find(x=>x.stem==='癸');isDemo=false;month=1;`,c);
 for(const fn of ['home()','guardianPage()','fortunePage()','sharePage()','codexPage()']){
