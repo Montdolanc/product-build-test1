@@ -31,9 +31,20 @@ assert.match(load('destiny/methodology.html'),/href="\.\/"/);
 const meta=load('.assetsignore');
 for(const name of ['randomness.html','probability-lab.html','responsible-play.html'])assert.ok(meta.includes('!'+name),name+' excluded from Workers static assets');
 const xml=load('sitemap.xml');
-for(const slug of ['/randomness.html','/probability-lab.html','/responsible-play.html','/destiny/','/destiny/methodology.html']){
- assert.ok(xml.includes(domain+slug),slug+' missing from sitemap');
+for(const slug of ['/randomness','/probability-lab','/responsible-play','/privacy','/destiny/','/destiny/methodology']){
+ assert.ok(xml.includes('<loc>'+domain+slug+'</loc>'),slug+' missing from sitemap');
 }
+assert.doesNotMatch(xml,/\.html</,'sitemap URLs must be the final extensionless URLs (Cloudflare 308-redirects .html)');
+for(const name of [...rootFiles,...articles]){
+ const src=load(name);
+ assert.doesNotMatch(src,/rel="canonical" href="[^"]*\.html"/,name+' canonical must not point at a redirecting .html URL');
+ assert.match(src,/property="og:image"/,name+' og:image');
+ const ld=src.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+ assert.ok(ld,name+' JSON-LD missing');
+ JSON.parse(ld[1]);
+}
+for(const f of ['og-image.png','llms.txt','destiny/assets/og-destiny.png'])assert.ok(fs.existsSync(path.join(root,f)),f+' missing');
+for(const f of ['llms.txt','og-image.png'])assert.ok(meta.includes('!'+f),f+' excluded from Workers static assets');
 assert.ok(load('robots.txt').includes(domain+'/sitemap.xml'));
 assert.match(load('404.html'),/name="robots" content="noindex"/);
 for(const file of fs.readdirSync(path.join(root,'destiny/share')).filter(x=>x.endsWith('.html'))){
