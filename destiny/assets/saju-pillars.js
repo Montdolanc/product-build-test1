@@ -1,4 +1,4 @@
-/* Destiny Garden v0.6 - Korean year, month, day and hour pillars.
+/* Destiny Garden v0.7 - Korean year, month, day and hour pillars.
    Year begins at 立春 (solar longitude 315°). Months begin at the 12 節,
    not calendar month or lunar first day. Hour pillars are 2-hour branches.
    Day transition convention: midnight 00:00 (자정/조자시 option, sect2),
@@ -21,12 +21,29 @@ function civilToInstant(y,m,d,h,mi){
    const diff=target-localAsUTC(guess);
    guess+=diff;
    if(diff===0){
-     // Some DST autumn dates occur twice; use earliest and disclose ambiguity.
-     const alternatives=[guess-3600000,guess+3600000].filter(v=>localAsUTC(v)===target);
-     return {instant:Math.min(guess,...alternatives),ambiguous:alternatives.length>0};
+     // A repeated civil time may differ by 30 or 60 minutes in Korean history.
+     // Enumerate neighboring offsets rather than assuming one-hour DST.
+     const probe=[guess-12*3600000,guess-3*3600000,guess,guess+3*3600000,guess+12*3600000];
+     const offsets=new Set(probe.map(x=>localAsUTC(x)-x));
+     const candidates=[...offsets].map(offset=>target-offset).filter(x=>localAsUTC(x)===target);
+     return {instant:Math.min(...candidates),lastInstant:Math.max(...candidates),ambiguous:candidates.length>1};
    }
  }
  throw Error('일광절약시간제 등으로 존재하지 않는 출생시각입니다. 다른 시각을 확인해 주세요.');
+}
+// Historical offset/DST changes sometimes skipped midnight. For unknown
+// birth time, select earliest and latest *existing* moments of the civil day.
+function civilDateEdge(y,m,d,last){
+ for(let step=0;step<1440;step++){
+   const minute=last?1439-step:step;
+   try{
+     const found=civilToInstant(y,m,d,Math.floor(minute/60),minute%60);
+     return {instant:last?found.lastInstant:found.instant,skippedMinutes:step};
+   }catch(e){
+     if(!String(e.message).includes('존재하지 않는 출생시각'))throw e;
+   }
+ }
+ throw Error('해당 날짜에 유효한 한국 표준시를 찾을 수 없습니다.');
 }
 function yearPillarFor(instant,localYear){
  const year=instant>=g.KoreanSolarTerms.termUtc(localYear,2)?localYear:localYear-1;
@@ -70,10 +87,13 @@ function compute({solarDate,timeKnown=false,time='12:00'}){
    const mo=monthPillarFor(res.instant,y,yr.index%10);
    year=yr.name;month=mo.name;hour=hourPillarFor(dayStemIdx,h);
    clockAmbiguous=res.ambiguous;
-   if(clockAmbiguous)warnings.push('서머타임의 반복 시각이므로 가능한 두 순간 중 이른 쪽을 적용했습니다.');
+   if(clockAmbiguous)warnings.push('과거 한국의 표준시·서머타임 변경으로 출생시각이 두 번 나타납니다. 이른 순간을 적용했습니다.');
  }else{
-   const a=civilToInstant(y,m,d,0,0).instant;
-   const b=civilToInstant(y,m,d,23,59).instant;
+   const first=civilDateEdge(y,m,d,false),last=civilDateEdge(y,m,d,true);
+   const a=first.instant,b=last.instant;
+   if(first.skippedMinutes||last.skippedMinutes){
+     warnings.push('한국의 역사적 시각 변경으로 존재하지 않는 시각을 제외하고 해당 날짜를 판정했습니다.');
+   }
    const y1=yearPillarFor(a,y),y2=yearPillarFor(b,y);
    year=y1.name===y2.name?y1.name:null;
    const m1=monthPillarFor(a,y,y1.index%10),m2=monthPillarFor(b,y,y2.index%10);
@@ -83,9 +103,9 @@ function compute({solarDate,timeKnown=false,time='12:00'}){
    warnings.push('출생시각이 없어 시주를 계산하지 않았습니다.');
  }
  return {year,month,day,hour,mode:'full',timeKnown:!!timeKnown,termBoundary,clockAmbiguous,warnings,
-  dayStem:day[0],calculationVersion:'0.6.0',solarTermsVersion:g.KoreanSolarTerms.version,
+  dayStem:day[0],calculationVersion:'0.7.0',solarTermsVersion:g.KoreanSolarTerms.version,
   dayBoundaryConvention:'00:00; 23:00 Zi hour uses same calendar-day stem',
   timezone:'Asia/Seoul (historical civil offsets; no longitude correction)'};
 }
-g.KoreanSajuPillars=Object.freeze({version:'0.6.0',compute,civilToInstant});
+g.KoreanSajuPillars=Object.freeze({version:'0.7.0',compute,civilToInstant});
 })(typeof window!=='undefined'?window:globalThis);
