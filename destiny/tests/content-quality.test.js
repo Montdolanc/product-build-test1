@@ -41,9 +41,15 @@ for(const file of fs.readdirSync(path.join(root,'destiny/share')).filter(x=>x.en
  assert.match(src,/name="robots" content="noindex,follow"/,file+' is a low-text share page that must not be indexed');
  assert.doesNotMatch(src,/pagead2\.googlesyndication\.com/,file+' must not include AdSense scripts');
 }
-for(const name of ['privacy.html','404.html','destiny/privacy.html']){
+for(const name of ['about.html','privacy.html','404.html','destiny/privacy.html']){
  assert.doesNotMatch(load(name),/pagead2\.googlesyndication\.com/,name+' must not include AdSense script');
 }
+const gardenHome=load('destiny/index.html');
+const appRoot=gardenHome.split('<main class="shell" id="app"')[1]?.split('</main>')[0];
+assert.ok(appRoot && appRoot.length>1000,'Destiny home needs useful HTML without JavaScript');
+assert.match(appRoot,/href="methodology.html"/);
+assert.match(appRoot,/생년월일에 담긴 자연의 상징/);
+assert.match(load('privacy.html'),/애드센스 사용을 신청한 상태/);
 const ads=load('ads.txt').trim();
 assert.match(ads,/google\.com, pub-3184173879744918, DIRECT, f08c47fec0942fa0/);
 assert.match(load('index.html'),/ca-pub-3184173879744918/);
