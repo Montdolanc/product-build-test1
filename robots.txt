@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://six-numbers-lotto.montdolanc.workers.dev/sitemap.xml
+# Non-content utility and private-share paths stay out of search listings.
+# noindex tags on actual pages take precedence; crawlers can read those pages.
+Sitemap: https://product-build-test1-1o7.pages.dev/sitemap.xml

@@ -7,6 +7,11 @@ on:
       - "index.html"
       - "404.html"
       - "styles.css"
+      - "*.html"
+      - ".assetsignore"
+      - "robots.txt"
+      - "sitemap.xml"
+      - "ads.txt"
       - ".github/workflows/destiny-checks.yml"
   push:
     branches: [main]
@@ -15,6 +20,11 @@ on:
       - "index.html"
       - "404.html"
       - "styles.css"
+      - "*.html"
+      - ".assetsignore"
+      - "robots.txt"
+      - "sitemap.xml"
+      - "ads.txt"
       - ".github/workflows/destiny-checks.yml"
 
 permissions:
@@ -38,3 +48,5 @@ jobs:
         run: node destiny/tests/plain-korean.test.js
       - name: Navigation and site-links smoke test
         run: node destiny/tests/navigation.test.js
+      - name: AdSense readiness and content quality checks
+        run: node destiny/tests/content-quality.test.js
