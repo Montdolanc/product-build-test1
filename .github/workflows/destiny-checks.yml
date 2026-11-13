@@ -28,3 +28,5 @@ jobs:
         run: node destiny/tests/historical-time.test.js
       - name: Ten-god and missing-pillar explanation regressions
         run: node destiny/tests/insights.test.js
+      - name: Korean-only output and public cards
+        run: node destiny/tests/plain-korean.test.js
