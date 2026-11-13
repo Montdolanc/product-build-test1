@@ -4,11 +4,17 @@ on:
   pull_request:
     paths:
       - "destiny/**"
+      - "index.html"
+      - "404.html"
+      - "styles.css"
       - ".github/workflows/destiny-checks.yml"
   push:
     branches: [main]
     paths:
       - "destiny/**"
+      - "index.html"
+      - "404.html"
+      - "styles.css"
       - ".github/workflows/destiny-checks.yml"
 
 permissions:
@@ -30,3 +36,5 @@ jobs:
         run: node destiny/tests/insights.test.js
       - name: Korean-only output and public cards
         run: node destiny/tests/plain-korean.test.js
+      - name: Navigation and site-links smoke test
+        run: node destiny/tests/navigation.test.js
