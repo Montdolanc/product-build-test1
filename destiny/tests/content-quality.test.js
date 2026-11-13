@@ -45,10 +45,10 @@ for(const name of ['about.html','privacy.html','404.html','destiny/privacy.html'
  assert.doesNotMatch(load(name),/pagead2\.googlesyndication\.com/,name+' must not include AdSense script');
 }
 const gardenHome=load('destiny/index.html');
-const appRoot=gardenHome.match(/<main class="shell" id="app"[\\s\\S]*?<\\/main>/);
-assert.ok(appRoot && appRoot[0].length>1000,'Destiny home needs useful HTML without JavaScript');
-assert.match(appRoot[0],/href="methodology.html"/);
-assert.match(appRoot[0],/생년월일에 담긴 자연의 상징/);
+const appRoot=gardenHome.split('<main class="shell" id="app"')[1]?.split('</main>')[0];
+assert.ok(appRoot && appRoot.length>1000,'Destiny home needs useful HTML without JavaScript');
+assert.match(appRoot,/href="methodology.html"/);
+assert.match(appRoot,/생년월일에 담긴 자연의 상징/);
 assert.match(load('privacy.html'),/애드센스 사용을 신청한 상태/);
 const ads=load('ads.txt').trim();
 assert.match(ads,/google\.com, pub-3184173879744918, DIRECT, f08c47fec0942fa0/);
